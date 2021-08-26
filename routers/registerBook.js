@@ -9,18 +9,6 @@ const router = express.Router()
 
 router.post('/', async (req,res)=>{
     const {title, authorFirstName, authorLastName, genre, publishedDate, rating, numberOfPages, publishedPlace, token} = req.body
-    
-    try{
-        if(token == null){
-            return res.json({status:'error', message: 'User has not login'})
-        }else{
-            const user = jwt.verify(token,process.env.JWT_SECRET)
-            adminStatus = await User.findById({_id:user.id})
-        }
-    }catch(error){
-        console.log(error)
-        return res.json({status:'error', message: 'Using worng Username/Password'})
-    }
 
     const author_id = await Author.findOne({
         firstName:authorFirstName, 
@@ -39,13 +27,14 @@ router.post('/', async (req,res)=>{
     })
 
     try{
-        if(adminStatus.admin == true){
-            const respone = await book.save()
-            res.json(respone)
-            console.log('Book created successfully: ', respone)
+        const respone = await book.save()
+        res.json(respone)
+        console.log('Book created successfully: ', respone)
+        /*if(adminStatus.admin == true){
+            
         }else{
             return res.json({status: 'error', error:'Admin Only'})
-        }
+        }*/
     }catch(error){
         console.log(error)
         return res.json({status:'error', message: error})

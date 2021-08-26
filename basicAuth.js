@@ -1,29 +1,29 @@
 const jwt = require('jsonwebtoken')
-//const User = require('../model/user')
+const User = require('./model/user')
 require('dotenv/config')
 
-function AutLog(req, res, next){
-    const {token} = req.body
-
+function AutLogin(req, res, next){
+    const token = req.body.token
     if(token == null){
         res.status(403)
         return res.send('You need to sign in')
     }
-
+    let user = null
     try{
-        jwt.verify(token,process.env.JWT_SECRET)
+        user = jwt.verify(token,process.env.JWT_SECRET)
     }catch(error){
         console.log(error)
         return res.send('Invaild Username/Password')
     }
+    if(user.id){
+        req.user = User.findById({_id:user.id})
+    }
     next()
 }
 
-function AutAdmin(token){
+function AutAdmin(){
     return (req,res,next)=>{
-        const user = jwt.verify(token,process.env.JWT_SECRET)
-        //const adminStatus = User.findById({_id:user.id})
-        if(role === false){
+        if(req.user.admin === false){
             res.status(401)
             return res.send('Not allowed')
         }
@@ -31,4 +31,4 @@ function AutAdmin(token){
     }
 }
 
-module.exports = {AutLog,AutAdmin}
+module.exports = {AutAdmin,AutLogin}
