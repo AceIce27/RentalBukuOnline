@@ -21,14 +21,12 @@ function AutLogin(req, res, next){
     next()
 }
 
-function AutAdmin(){
-    return (req,res,next)=>{
+function AutAdmin(req, res, next){
         if(req.user.admin === false){
             res.status(401)
             return res.send('Not allowed')
         }
         next()
-    }
 }
 
 module.exports = {AutAdmin,AutLogin}

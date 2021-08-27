@@ -33,9 +33,9 @@ app.use('/login', loginRoute)
 app.use(AutLogin)
 app.use('/change-password',changePasswordRoute)
 app.use('/daftarBuku', daftarBukuRoute)
-app.use('/registerBook', registerBookRoute)
-app.use('/registerAuthor', registerAuthorRoute)
-app.use('/registerGenre', registerGenreRoute)
+app.use('/registerBook',AutAdmin, registerBookRoute)
+app.use('/registerAuthor',AutAdmin, registerAuthorRoute)
+app.use('/registerGenre',AutAdmin, registerGenreRoute)
 app.use('/registerRentedBook',registerRentedBookRoute)
 
 app.get('/', (req,res)=>{
