@@ -5,17 +5,33 @@ const jwt = require('jsonwebtoken')
 const router = express.Router()
 
 router.get('/', async (req,res)=>{
-    const {token} = req.body
-
-    if(token == null){
-        return res.json({status:'error',message:'User has not login'})
-    }
-    
     try{
-        jwt.verify(token,process.env.JWT_SECRET)
-        const Books = await Book.find()
+        const Books = await Book.aggregate([{
+            $lookup:{
+                from: "Genres",
+                localField: "genres",
+                foreignField: "code",
+                as: "genres"
+            }
+        },{
+            $lookup:{
+                from: "Author",
+                localField: "author_id",
+                foreignField: "_id",
+                as: "author"
+            }
+        },{
+            $project:{
+                _id: 0,
+                Title: "$title",
+                Genre: "$genres.name",
+                author: {firstName:1,lastName:1},
+                Rating: "$rating"
+            }
+        }])
         res.json(Books)
     }catch(err){
+        console.log(err)
         res.json({status: 'error', message: err})
     }
 })

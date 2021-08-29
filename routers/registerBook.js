@@ -25,13 +25,16 @@ router.post('/', async (req,res)=>{
             }
         }
     ])
-    //const genreCode = genreName.code
-    console.log(genreName)
+
+    let genreCode = []
+    for (let i=0;i<genreName.length;i++){
+        genreCode.push(genreName[i]["code"])
+    }
 
     const book = new Book({
         title: title,
         author_id: author_id._id,
-        genres: genreName,
+        genres: genreCode,
         publishedDate: publishedDate,
         rating: rating,
         numberOfPages: numberOfPages,
@@ -42,11 +45,6 @@ router.post('/', async (req,res)=>{
         const respone = await book.save()
         res.json(respone)
         console.log('Book created successfully: ', respone)
-        /*if(adminStatus.admin == true){
-            
-        }else{
-            return res.json({status: 'error', error:'Admin Only'})
-        }*/
     }catch(error){
         console.log(error)
         return res.json({status:'error', message: error})

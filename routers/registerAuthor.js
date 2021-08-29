@@ -18,11 +18,6 @@ router.post('/', async (req,res)=>{
         const authorSaved = await author.save()
         res.json(authorSaved)
         console.log('Author created successfully: ', authorSaved)
-        /*if(adminStatus.admin == true){
-            
-        }else{
-            return res.json({status: 'error', error:'Admin Only'})
-        }*/
     }catch(error){
         if(error.code === 11000){
             return res.json({status: 'error', error:'Username already in use'})
