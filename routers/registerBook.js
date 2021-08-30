@@ -13,28 +13,23 @@ router.post('/', async (req,res)=>{
         lastName:authorLastName
     })
 
-    const genreName = await Genre.aggregate([
+    const genreCode = await Genre.aggregate([
         {
             $match:{
                 name:{$in:genre}
             }
         },{
-            $project:{
-                _id:0,
-                code:1
+            $group:{
+                _id:null,
+                Code:{$addToSet:"$code"}
             }
         }
     ])
 
-    let genreCode = []
-    for (let i=0;i<genreName.length;i++){
-        genreCode.push(genreName[i]["code"])
-    }
-
     const book = new Book({
         title: title,
         author_id: author_id._id,
-        genres: genreCode,
+        genres: genreCode[0]["Code"],
         publishedDate: publishedDate,
         rating: rating,
         numberOfPages: numberOfPages,
