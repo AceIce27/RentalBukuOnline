@@ -6,16 +6,25 @@ const RentedBook = require('../model/rentedBooks')
 const router = express.Router()
 
 router.post('/', async (req, res)=>{
-    const {bookTitle, userName, startDate, endDate} = req.body
+    const {bookTitle, userName, rentedDay} = req.body
 
     book = await Book.findOne({title: bookTitle})
     user = await User.findOne({username: userName})
 
+    if(!rentedDay || typeof rentedDay !== 'number'){
+        return res.json({status: 'error', error: 'Invaild rentedDay'})
+    }
+
+    if(rentedDay>30){
+        return res.json({status: 'error', error: 'Need be less than 30 day'})
+    }
+
+    let date = new Date()
+    date.setDate(date.getDate()+rentedDay)
     rentedBook = new RentedBook({
         book_id: book._id,
         user_id: user._id,
-        startDate: startDate,
-        endDate: endDate
+        endDate: date
     })
 
     try{

@@ -32,11 +32,11 @@ app.use('/register', registerRoute)
 app.use('/login', loginRoute)
 app.use(AutLogin)
 app.use('/change-password',changePasswordRoute)
-app.use('/daftarBuku', daftarBukuRoute)
 app.use('/registerBook',AutAdmin, registerBookRoute)
 app.use('/registerAuthor',AutAdmin, registerAuthorRoute)
 app.use('/registerGenre',AutAdmin, registerGenreRoute)
 app.use('/registerRentedBook',registerRentedBookRoute)
+app.use('/daftarBuku', daftarBukuRoute)
 
 app.get('/', (req,res)=>{
     res.send('We are in home page')
