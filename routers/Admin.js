@@ -51,7 +51,7 @@ router.delete('/mengurangiGenre', async (req,res)=>{
     ])
 console.log(genreCode[0]["Code"])
     try{
-        await Book.updateOne({book_id},{
+        await Book.updateOne({_id:book_id},{
             $pullAll:{
                 genres: genreCode[0]["Code"]
             }
