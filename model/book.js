@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const BookSchema = new mongoose.Schema({
         title: {type: String, required: true},
         author_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Author', required: true},
-        genres: {type: Array, required: true},
+        genres: {type: [String], required: true},
         publishedDate: {type: Date, required: true},
         rating: {type: Number, required: true},
         numberOfPages: {type: Number, required: true},

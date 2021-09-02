@@ -18,6 +18,7 @@ const registerBookRoute = require('./routers/registerBook')
 const registerAuthorRoute = require('./routers/registerAuthor')
 const registerGenreRoute = require('./routers/registerGenre')
 const registerRentedBookRoute = require('./routers/registerRentedBook')
+const adminRoute = require('./routers/Admin')
 
 mongoose.connect(process.env.DB_CONNECTION,{
     useUnifiedTopology: true,
@@ -32,6 +33,7 @@ app.use('/register', registerRoute)
 app.use('/login', loginRoute)
 app.use(AutLogin)
 app.use('/change-password',changePasswordRoute)
+app.use('/admin',AutAdmin,adminRoute)
 app.use('/registerBook',AutAdmin, registerBookRoute)
 app.use('/registerAuthor',AutAdmin, registerAuthorRoute)
 app.use('/registerGenre',AutAdmin, registerGenreRoute)

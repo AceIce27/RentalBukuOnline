@@ -1,6 +1,6 @@
 const express = require('express')
 const Book = require('../model/book')
-const jwt = require('jsonwebtoken')
+const Genre = require('../model/genre')
 
 const router = express.Router()
 

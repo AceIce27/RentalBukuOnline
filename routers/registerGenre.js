@@ -16,7 +16,7 @@ router.post('/',async (req, res)=>{
         console.log('Genre created successfully: ', genreSaved)
     }catch(error){
         console.log(error)
-        return res.json({status:'error'})
+        return res.json({status:'error', message: error})
     }
 })
 
