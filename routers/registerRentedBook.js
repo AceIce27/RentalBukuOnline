@@ -21,6 +21,7 @@ router.post('/', async (req, res)=>{
 
     let date = new Date()
     date.setDate(date.getDate()+rentedDay)
+    
     rentedBook = new RentedBook({
         book_id: book._id,
         user_id: user._id,

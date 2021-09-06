@@ -1,7 +1,6 @@
 const express = require('express')
 const Book = require('../model/book')
-const Genre = require('../model/genre')
-const Author = require('../model/author')
+const mongoose = require('mongoose')
 
 const router = express.Router()
 
@@ -124,6 +123,57 @@ router.get('/fillterGenre', async (req,res)=>{
 
     try{
         res.json(Books)
+    }catch(error){
+        console.log(error)
+        res.json({status: 'error', message: error})
+    }
+})
+
+router.get('/rincianBuku', async (req,res)=>{
+    const {book_id} = req.body
+
+    const book = await Book.aggregate([{
+        $match:{
+            _id: mongoose.Types.ObjectId(book_id),
+        }
+    },{
+        $lookup:{
+            from: "Genres",
+            localField: "genres",
+            foreignField: "code",
+            as: "genres"
+        }
+    },{
+        $lookup:{
+            from: "Author",
+            localField: "author_id",
+            foreignField: "_id",
+            as: "author"
+        }
+    },{
+        $project:{
+            _id: 0,
+            Title: "$title",
+            Genre: "$genres.name",
+            Author: {
+                $concat:[
+                    {$arrayElemAt:["$author.firstName",0]}," ",
+                    {$arrayElemAt:["$author.lastName",0]}]
+                },
+            PublicDate: {
+                $dateToString: {
+                    format: '%Y-%m-%d',
+                    date: "$publishedDate"
+                    }
+                },
+            PublishedPlace: "$publishedPlace",
+            NumberOfPages: "$numberOfPages",
+            Rating: "$rating",
+        }
+    }])
+
+    try{
+        res.json(book)
     }catch(error){
         console.log(error)
         res.json({status: 'error', message: error})
