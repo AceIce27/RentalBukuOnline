@@ -1,9 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const User = require('./model/user')
 const {AutAdmin,AutLogin} = require('./basicAuth')
-const jwt = require('jsonwebtoken')
 require('dotenv/config')
 
 const app = express()

@@ -18,7 +18,7 @@ router.get('/', async(req,res)=>{
 
     if(await bcrypt.compare(password, user.password)){
 
-        const token = jwt.sign({id: user._id, username: user.username},process.env.JWT_SECRET)
+        const token = jwt.sign({id: user._id, username: user.username},process.env.JWT_SECRET,{expiresIn: '100m'})
 
         return res.json({status: 'ok', data: token})
     }
